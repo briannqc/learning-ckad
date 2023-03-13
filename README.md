@@ -95,3 +95,25 @@ $ kgp
 $ k delete -f cronjob.yaml
 cronjob.batch "sleepy" deleted
 ```
+
+### Labels
+
+```shell
+# Create a deployment with name "design2" using "nginx" image
+$ k create deployment design2 --image=nginx
+deployment.apps/design2 created
+
+# Get deployments with SELECTOR: app=design2
+$ k get deployments.apps design2 -o wide
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR
+design2   1/1     1            1           49s   nginx        nginx    app=design2
+
+# Get pods with SELECTOR: app=design2
+$ kgp -l app=design2
+NAME                       READY   STATUS    RESTARTS   AGE
+design2-7854558bbc-95r9q   1/1     Running   0          3m14s
+
+# Delete pods with label SELECTOR: app=design2
+$ k delete pod -l app=design2
+pod "design2-7854558bbc-95r9q" deleted
+```
