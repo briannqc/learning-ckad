@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-tester
+  labels:
+    name: init-tester
+spec:
+  containers:
+    - name: webservice
+      image: nginx
+      resources:
+        limits:
+          cpu: "0.5"
+          memory: "500Mi"
+  initContainers:
+    - name: succeeded
+      image: busybox
+      command:
+        - "/bin/true"
