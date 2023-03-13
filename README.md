@@ -96,6 +96,22 @@ $ k delete -f cronjob.yaml
 cronjob.batch "sleepy" deleted
 ```
 
+### Custom Resource Definitions (CRDs)
+
+```shell
+# Get available CRDs
+$ k get crd
+
+# Get sparkapplication CRD objects
+$ k get sparkapplication
+
+# Get a specific sparkapplication CRD object with name: my-spark-app
+$ k get sparkapplication my-spark-app
+
+# Get flinkcluster CRD objects
+$ k get flinkcluster
+```
+
 ### Labels
 
 ```shell
