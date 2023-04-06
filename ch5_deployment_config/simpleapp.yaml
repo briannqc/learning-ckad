@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: try1
+spec:
+  selector:
+    matchLabels:
+      app: simpleapp
+  template:
+    metadata:
+      labels:
+        app: simpleapp
+    spec:
+      containers:
+        - name: simpleapp
+          image: busybox
+          command:
+            - "sleep"
+            - "600"
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          imagePullPolicy: Always
+          env:
+            - name: ilike
+              valueFrom:
+                configMapKeyRef:
+                  key: favorite
+                  name: colors
+          envFrom:
+            - configMapRef:
+                name: colors
+          volumeMounts:
+            - mountPath: /etc/cars
+              name: car-vol
+      volumes:
+        - name: car-vol
+          configMap:
+            defaultMode: 420
+            name: fast-car
