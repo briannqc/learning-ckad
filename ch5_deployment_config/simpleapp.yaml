@@ -34,8 +34,13 @@ spec:
           volumeMounts:
             - mountPath: /etc/cars
               name: car-vol
+            - mountPath: /opt
+              name: nfs-vol
       volumes:
         - name: car-vol
           configMap:
             defaultMode: 420
             name: fast-car
+        - name: nfs-vol
+          persistentVolumeClaim:
+            claimName: pvc-one
