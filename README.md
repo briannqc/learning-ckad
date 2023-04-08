@@ -1,6 +1,10 @@
 # Learning CKAD
 Taking course: https://trainingportal.linuxfoundation.org/courses/kubernetes-for-developers-lfd259
 
+## Curriculum
+
+https://github.com/cncf/curriculum
+
 ## Cheat Sheet
 
 ### Job
