@@ -133,3 +133,44 @@ design2-7854558bbc-95r9q   1/1     Running   0          3m14s
 $ k delete pod -l app=design2
 pod "design2-7854558bbc-95r9q" deleted
 ```
+
+### Rolling Updates and Rollbacks
+
+```shell
+# Create a deployment from yaml file
+$ k apply -f deploy.yaml
+
+# Edit a deployment, e.g. Image
+$ ked nginx
+
+# View the update history of the deployment
+$ k rollout history deployment nginx
+deployment.apps/nginx 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+3         <none>
+
+# Compare the output of therollout historyfor the two revisions
+$ k rollout history deployment nginx --revision=1 > one.out
+$ k rollout history deployment nginx --revision=2 > two.out
+$ diff one.out two.out
+1c1
+< deployment.apps/nginx with revision #1
+---
+> deployment.apps/nginx with revision #2
+4c4
+<       pod-template-hash=5d6d94b454
+---
+>       pod-template-hash=747b8c9d84
+7c7
+<     Image:    nginx:3.10
+---
+>     Image:    nginx:1.16.0
+
+# View what would be undone using the --dry-run option while undoing the rollout.
+$ k rollout undo --dry-run=client deployment/nginx
+
+# Rollout
+$ k rollout undo deployment nginx --to-revision=1
+```
