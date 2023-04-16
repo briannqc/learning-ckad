@@ -178,3 +178,81 @@ $ k rollout undo --dry-run=client deployment/nginx
 # Rollout
 $ k rollout undo deployment nginx --to-revision=1
 ```
+
+### ServiceAccount  and ClusterRole
+
+```shell
+$ k get clusterroles
+NAME                                                                   CREATED AT
+admin                                                                  2023-04-15T23:08:26Z
+cluster-admin                                                          2023-04-15T23:08:26Z
+edit                                                                   2023-04-15T23:08:26Z
+kindnet                                                                2023-04-15T23:08:28Z
+...
+
+$ k get clusterroles cluster-admin -o yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+    rbac.authorization.kubernetes.io/autoupdate: "true"
+  creationTimestamp: "2023-04-15T23:08:26Z"
+  labels:
+    kubernetes.io/bootstrapping: rbac-defaults
+  name: cluster-admin
+  resourceVersion: "72"
+  uid: da2ff982-d9a7-4547-a691-73efe0e54a87
+rules:
+  - apiGroups:
+      - '*'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+  - nonResourceURLs:
+      - '*'
+    verbs:
+      - '*'
+
+$ k get clusterroles admin -o yaml
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        rbac.authorization.k8s.io/aggregate-to-admin: "true"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+    rbac.authorization.kubernetes.io/autoupdate: "true"
+  creationTimestamp: "2023-04-15T23:08:26Z"
+  labels:
+    kubernetes.io/bootstrapping: rbac-defaults
+  name: admin
+  resourceVersion: "350"
+  uid: e9a5da5b-2439-4d59-a979-758832a78bc3
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods/attach
+      - pods/exec
+      - pods/portforward
+      - pods/proxy
+      - secrets
+      - services/proxy
+    verbs:
+      - get
+      - list
+      - watch
+```
+
+```
+$ k apply -f clusterrole.yaml
+clusterrole.rbac.authorization.k8s.io/secret-access-cr created
+
+$ k apply -f serviceaccount.yaml
+serviceaccount/secret-access-sa created
+
+$ k apply -f rolebinding.yaml
+rolebinding.rbac.authorization.k8s.io/secret-rb created
+```
