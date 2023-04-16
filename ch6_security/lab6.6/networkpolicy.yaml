@@ -1,0 +1,18 @@
+# The policy onlyhas effect when the network plugin, likeProject Calico,
+# are capable of honoring them. If used with a plugin likeflannelthey
+# will have no effect.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: netblock
+spec:
+  podSelector:
+    matchLabels:
+      app: webserver
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 80
