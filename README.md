@@ -7,6 +7,29 @@ https://github.com/cncf/curriculum
 
 ## Cheat Sheet
 
+### Pod
+
+```shell
+# Run a pod without yaml
+$ k run ubuntu-pod --image=ubuntu --command -- sleep 86400
+pod/ubuntu-pod created
+
+# Get all pods from current namespace
+$ kgp
+
+# Get all pods from a specific namespace
+$ kgp -n specific
+
+# Get all pods from all namespaces
+$ kgpa
+
+# Get a pod with name
+$ kgp mypod
+
+# Bash a pod
+$ keti mypod -- bash
+```
+
 ### Job
 
 Sample: job.yaml
@@ -255,4 +278,33 @@ serviceaccount/secret-access-sa created
 
 $ k apply -f rolebinding.yaml
 rolebinding.rbac.authorization.k8s.io/secret-rb created
+```
+
+### Services
+
+```shell
+# Get all services in current namespace
+$ kgs
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   6d9h
+
+# Get all services in a specific namespace
+$ kgs -n kube-system
+NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+kube-dns   ClusterIP   10.96.0.10   <none>        53/UDP,53/TCP,9153/TCP   6d9h
+
+# Get all services from all namespaces
+$ kgsa
+NAMESPACE     NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+default       kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP                  6d9h
+kube-system   kube-dns     ClusterIP   10.96.0.10   <none>        53/UDP,53/TCP,9153/TCP   6d9h
+
+# Get a service
+$ kgs my-app -o yaml
+
+# Delete a service
+$ k delete service my-app
+
+# Create a new service without defining yaml
+$ k expose deployment mainapp --name=shopping --type=NodePort --port=80
 ```
