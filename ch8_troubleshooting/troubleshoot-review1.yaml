@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: igottrouble
+  name: igottrouble
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: igottrouble
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: igottrouble
+    spec:
+      containers:
+        - image: vish/stress
+          imagePullPolicy: Always
+          name: igottrouble
+          resources:
+            limits:
+              cpu: "3000m"
+              memory: "2Gi"
+            requests:
+              cpu: "3000m"
+              memory: "2Gi"
+          args:
+            - -cpus
+            - "2"
+            - -mem-total
+            - "1950Mi"
+            - -mem-alloc-size
+            - "10Mi"
+            - -mem-alloc-sleep
+            - "10s"
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
